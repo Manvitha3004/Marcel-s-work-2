@@ -1,0 +1,10 @@
+L = 100
+Ntraj = 100
+Np = 10^4
+20 steps/period -> 2.000000e+11 spin-site updates
+40 steps/period -> 4.000000e+11 spin-site updates
+
+gamma=1e-4, periods=250000.0, steps=10000000.0
+gamma=1e-3, periods=25000.0, steps=1000000.0
+gamma=10.0, periods=500.0, steps=10000.0
+gamma=100.0, periods=50.0, steps=1000.0

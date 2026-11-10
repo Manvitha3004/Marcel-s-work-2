@@ -1,0 +1,384 @@
+DTL-ST-REPRO-001 | CANDIDATE v0.1.0
+2 Nov 2026
+DTL–ST–REPRO–001
+Independent Reconstruction of Noise-Driven Discrete Time Liquids
+Pre-Execution Protocol Candidate v0.1.0
+Original spin–cavity reference first; typed Spiral-Time extensions only in later, separate protocols
+NOT FROZEN
+NO MANY-BODY RUN EXECUTED
+NO PHYSICAL VALIDATION
+Proposed
+au-
+thor
+Marcel Krüger; Independent Researcher, Germany. Protocol designer; inde-
+pendent external review pending.
+Date / identity
+2026-11-02; DTL-ST-REPRO-001 candidate v0.1.0, separate from Mathemati-
+cal Core v0.3.1.
+Source
+of
+physics
+Wang,
+Schindler,
+Bukov
+and
+Michael,
+Discrete
+time
+liquids,
+arXiv:2610.30266v1, 18-page manuscript including supplement (21 Oc-
+tober 2026), hereafter [W26].
+Data
+prove-
+nance
+Original simulation/code Zenodo DOI 10.5281/zenodo.23168407, currently
+restricted. Original manuscript PDF locally available.
+Decision author-
+ity
+No change to physical equations, samples, success thresholds, or null fam-
+ilies after confirmatory target exposure. Freeze requires scientific review,
+data/parameter manifest, runnable implementation and costs.
+Executive scientific decision
+This document specifies what it would take to independently reconstruct the published classical
+spin–cavity dynamics and assess their characteristic period doubling and time-soliton statistics. The
+published paper makes the source model sufficiently explicit for an independent implementation;
+unavailable original input files/code, unrecovered figure-point arrays and random streams still prevent
+an identical archived-code replay. The outcome of Manvitha B.’s separate kinetic-oscillator audit is
+not evidence for a many-body time liquid. Its original energy-ledger FAIL and subsequent diagnosis
+remain separate provenance objects.
+Scope barrier: No HLV/Spiral-Time phase-memory feature or kinetic coefficient may be added in
+DTL-ST-REPRO-001. A later diagnostic study and later kinetic-intervention study each require a
+separate preregistered freeze. The square spin lattice is not the HLV 6D cut-and-project carrier; AΘ
+is a coefficient, not a fifth operator.[K26]
+1
+Source-native model and exact reconstruction target
+For a square lattice of L × L classical unit spins with periodic spatial boundaries, Si ∈S2, the
+main-text Hamiltonian and modulation are [W26, Eqs. (3)–(4)]:
+Hspin(t) = −Jeff(t)
+X
+⟨ij⟩
+Sz
+i Sz
+j −geff(t)
+X
+i
+Sx
+i ,
+(1)
+Jeff(t) = J[1 + λy(t)],
+geff(t) = g0[1 −λy(t)],
+g0 = π + ε0
+τosc
+.
+(2)
+The spin equation [W26, Methods Eq. (12)] is
+˙Si = Si × Bi(t),
+Bi =
+
+geff, 0, Jeff
+X
+j∈nn(i)
+Sz
+j
+
+.
+(3)
+1
+
+DTL-ST-REPRO-001 | CANDIDATE v0.1.0
+2 Nov 2026
+The oscillator is independent of the spins in the main reference model [W26, Eq. (5)]:
+¨y + γ ˙y + ω2
+0y = ξ(t),
+E[ξ(t)ξ(s)] = Dδ(t −s),
+D = 2γkBTbath
+MoscL2 ,
+(4)
+ωc =
+q
+ω2
+0 −(γ/2)2 = 2π
+τosc
+,
+τcav = 2
+γ ,
+T0 = Moscω2
+0L2
+kB
+.
+(5)
+The source sets J = 5, λ = Mosc = kB = 1, L = 100, θinit = 0.2 for the principal figures. The
+damping-dependent ω0 is recalculated to hold the damped oscillation period fixed; it is not held
+at the same value when γ changes. Tbath/T0 is a dimensionless temperature control, which must
+be mapped back to D using the stated T0. A missing factor of L2, mass or ω2
+0 is a substantive
+physics failure. For γ > 0, the stationary source oscillator implies the analytic control identities
+E[y2] = D/(2γω2
+0) = Tbath/T0, E[ ˙y2] = D/(2γ), and E[y ˙y] = 0. Their stochastic uncertainty, finite
+warm-up and autocorrelation require explicit treatment.
+2
+Initial conditions, discretization and stochastic semantics
+Spins. Sample independently ϕi ∼U(0, 2π) and cos θi ∼U(cos θinit, 1), set the unit spin as in [W26,
+Eq. (14)]:
+Si(0) = (sin θi cos ϕi, sin θi sin ϕi, cos θi).
+(6)
+The source uses an exact-rotation symmetric Strang split: x rotation through a half transverse-field
+step, z rotation through the full neighbor-interaction step with Sz
+j fixed in that substep, and another
+x half rotation. Rotation signs must be checked against ˙S = S × B rather than assumed from a
+graphics rotation API. Spin norm and boundary-neighbor census must be checked every numerical
+stage.
+Cavity. Start y = ˙y = 0 and pre-evolve for 5/γ before recording, for γ > 0. The source uses, during
+each time step ∆t, an independent standard normal ηn and the piecewise-constant random force
+ξn =
+p
+D/∆t ηn, so that its time-integrated impulse has variance D∆t. Any replacement by an
+exact Ornstein–Uhlenbeck update or alternative stochastic solver must be recorded as an independent
+algorithmic comparison, not silently identified with the source integrator.
+Source resolutions. The Methods report at least 20 steps per period: for τosc = 0.2, ∆t = 0.005 (40
+steps); for 0.01, ∆t = 0.0005 (20 steps); for 0.001, ∆t = 0.00005 (20 steps). The main figures use
+Np = 104 periods and Ntraj = 100 independent noise realizations unless otherwise specified. [W26,
+Methods and Supplement S11]. These are source values, not currently executable performance claims.
+3
+Reference observables and source-figure checkpoints
+Direct measurements. Store per-trajectory stroboscopic Mz(n) = L−2 P
+i Sz
+i (nτosc), the staggered
+signal (−1)nMz(n), oscillator y and ˙y summaries, random seed identity, time-grid identity and quality
+masks. Preserve a source-faithful definition of the normalized s(n) [W26, Eq. (6)] and implement the
+correlation and thermalization times [W26, Eqs. (7)–(11)] from source-aligned definitions, not ad hoc
+change-point outputs. The original independent-flip toy model is
+σn = σn−1bn,
+Pr(bn = −1) = p,
+sn = e−nτosc/τthσn.
+(7)
+The Bernoulli approximation belongs to the published null model; its predictive independence must
+not be inferred for observed many-body solitons.
+Primary source-figure target A (Fig. 2). At τosc = 0.2, γ = 10−3, ε0 = 0.1, contrast Tbath/T0 =
+0.01 and 0.9 using identical operational definitions. The source reports a weak/no subharmonic signal
+at low temperature and sustained period doubling in the 0.9 case. Quantify the ν = π component
+2
+
+DTL-ST-REPRO-001 | CANDIDATE v0.1.0
+2 Nov 2026
+relative to predeclared neighboring spectral bands, with Monte Carlo uncertainty. Source Figure 2 is
+a qualitative target until original numerical arrays become available.
+Primary target B (Fig. 3). At τosc = ε0 = 0.001, Tbath/T0 = 1, compare τcav/τosc = 20 vs 200
+and test the source signature: recurrent phase reversals with local period doubling, and separated
+correlation/thermalization times under the shorter coherence time. Source Figure 3 uses L = 100,
+Np = 104, Ntraj = 100. Avoid replacing a visibly fluctuating magnetization with a toy Bernoulli series
+and labeling it a spin reproduction.
+Secondary target C (Fig. 1b). At τosc = 0.2, γ = 10−4, ε0 = 0.1, reproduce the temperature-
+dependent ensemble Fourier amplitude | eF[E(Mz)](ν)| and its isolated ν = π subharmonic response.
+Use the same ensemble-first convention.
+Secondary target D (Fig. 1c and Fig. 4). Reconstruct the source phase-classification logic and
+the distribution of individual-trajectory correlation times. The original numerical region map and
+histogram bins are not supplied in the paper, hence exact pixel/array agreement is BLOCKED until
+inputs/arrays are obtained. The source classification uses ⟨⟨τcorr⟩⟩/τth > 0.418 for its DTC/DTL split,
+and ⟨⟨τcorr⟩⟩< 10τosc for the disordered-region cutoff; these are source empirical conventions, not
+universal physical thresholds. Its supplement reports sensitivity of disordered counts to changing the
+latter threshold.
+4
+Independent validation ladder – no outcome-driven changes
+1. F0: Provenance/identity. Hash [W26] PDF; freeze extracted Eqs. (3)–(5), (12)–(16), essential
+equations (6)–(11), and Supplement S11; record source commit, repository license, exact code
+inputs, acquisition/permissions and all deviations. If source code or data remain restricted, mark
+archived-code replay BLOCKED; allow independent reconstruction under that exact name.
+2. F1:
+Single-stage oscillator unit tests.
+Verify ωc, τcav, temperature/noise variance and
+stationary covariance from S2 by direct Monte Carlo; compare sampled impulse variance D∆t with
+theoretical confidence intervals and inspect pre-equilibration effects. The source-only Langevin
+dynamics must be verified before spins are switched on.
+3. F2: Deterministic spin mechanics. Compare Strang integration against an independently
+implemented adaptive solver on a predefined smooth deterministic drive. Check periodic boundaries,
+neighbor sums, exact spin-norm conservation within a numerical error budget, O(∆t2) convergence
+where an asymptotic regime is resolved, and source Supplement Fig. S10’s numerical behavior. No
+random forcing in this gate.
+4. F3: Stochastic convergence. On identical Brownian paths across resolutions (coarse increments
+sum fine increments), assess weak-observable stabilization, uncertainties and comparison with a
+separately implemented stochastic integrator. Do not expect pathwise equality for simulations
+driven by independent noise sequences at different step sizes.
+5. F4: Feasibility commitment. Before production: timed kernels, peak RAM, serialized outputs,
+independent-trajectory chunking, exact resume/no-overwrite behavior, deterministic seed-to-trial
+mapping and environment lock. The locked run cannot be replaced by a fast demonstrator. Any
+departure from L = 100, Np = 104, Ntraj = 100 creates a different finite-size/sampling study.
+6. F5: Original-physics reproduction. Run primary figure targets A and B with full declared
+conditions; record all trajectories, aggregate uncertainty and numerical quality; perform secondary
+targets as resources permit. The paper’s main qualitative phenomena must not be inferred from a
+single selected favorable trajectory.
+7. F6: Independent replication. A second implementation or lab compares source-native ob-
+servables at matched physical/numerical conditions, with random-seed-independent statistical
+comparisons. A reproduced figure-like pattern alone does not validate equilibrium physics or the
+original experimental existence (no experiment exists in this study).
+3
+
+DTL-ST-REPRO-001 | CANDIDATE v0.1.0
+2 Nov 2026
+5
+Pre-specified operational gates and uncertainty
+Gate
+Expected outcome and decision rule (candidate; quantitative statistical
+cutoffs not yet frozen)
+G00 Source prove-
+nance
+Source equations, parameters, temperature/noise units, figure conditions
+and hashes mapped exactly. Mismatch: FAIL. Restricted archived code:
+BLOCKED for strict replay.
+G01
+Spin
+kine-
+matics
+Periodic neighbor and spin sign tests correct; normalized exact rotations
+preserve |Si| with engineering drift at most 10−10. Technical FAIL if not.
+G02
+Determinis-
+tic integration
+Strang second-order convergence over at least three resolved step
+sizes,
+independently
+checked
+against
+adaptive
+ODE
+integration;
+FAIL/INCONCLUSIVE if numerical floor or unresolved sensitivity.
+G03
+Stochastic
+cavity
+Stationary variance, impulse variance and autocorrelation agree with
+analytic laws within dependence-aware Monte Carlo intervals. Numerical
+FAIL if a well-resolved mismatch persists.
+G04 Source Fig. 2
+Subharmonic spectral statistic with uncertainty for both T/T0 = 0.01
+and 0.9 at source settings. PASS requires a well-resolved increased sub-
+harmonic response at intermediate temperature versus low temperature,
+subject to a quantitative gate fixed before production; otherwise FAIL or
+INCONCLUSIVE.
+G05 Source Fig. 3
+Verify sign-switch evidence on full s(n) trajectories plus reported ensemble
+correlation, mean single-trajectory correlation, and thermalization scales
+at cavity ratios 20 and 200; quantify uncertainty. Without a locked
+quantitative gate, report descriptive reconstruction, not confirmatory
+PASS.
+G06
+Sam-
+ple/resource
+Source-scale (Np = 104, Ntraj = 100, L = 100) with unfiltered realizations
+and convergence reporting. If not feasible, BLOCKED; reduced scale
+cannot inherit original-reproduction PASS.
+G07 Reproducibil-
+ity
+Complete parameter, seed, software and hardware manifest, immutable
+logs, outputs and SHA-256 verification. Missing provenance: FAIL for
+replayability.
+G08 Claim bound-
+ary
+Do not infer quantum-spin, equilibrium, fundamental-time or HLV-
+specific physical claims from a simulated metastable classical model.
+Unsupported promotion is a claim-boundary FAIL.
+Threshold provenance. 10−10 in G01 is an engineering numerical tolerance, not a physical constant;
+its adequacy must be verified against machine precision and run length. The published 0.418 and
+10τosc are source-defined classification conventions, not our newly optimized thresholds. The 95%
+uncertainty interval and Ntraj = 100 are sampling standards/source sample size, not proof that 100
+runs are statistically sufficient for every rare-soliton tail. A result meeting selected gates while failing
+any load-bearing physical reproduction is not an overall PASS.
+Uncertainty. Independence unit is the full stochastic trajectory, never adjacent periods from the
+same realization. Provide trajectory-level bootstrap with preregistered seed and ≥2000 resamples;
+use simultaneous adjustment for explicitly multiple primary spectral or timescale comparisons, or
+report them as exploratory until a familywise rule is frozen. For rare events with few or zero solitons,
+give exact or interval-censored rate limits; no spurious precise estimates. Primary qualitative pattern
+matching should additionally be supported by convergence and sensitivity.
+Result labels. PASS: all frozen eligible load-bearing gates met. FAIL: a valid run decisively violates
+any required claim/gate. INCONCLUSIVE: correct execution but insufficient power, unstable numerics,
+or unresolvable source ambiguity. BLOCKED: missing legal source data, resources, critical parameters,
+or code. INVALID: run breaks the frozen implementation/quality contract; no scientific verdict. A
+pre-freeze technical feasibility exercise never counts as the frozen confirmatory run.
+4
+
+DTL-ST-REPRO-001 | CANDIDATE v0.1.0
+2 Nov 2026
+6
+Compute cost, resource controls and original-code access
+For L = 100, Ntraj = 100, Np = 104 and 20–40 substeps per period, the production demand is roughly
+L2 × Ntraj × Np × Nstep/period ≈2 × 1011 to 4 × 1011 spin-site time-step updates per parameter point,
+(8)
+excluding cavity equilibration, parameter sweeps and multi-resolution comparisons. The product is
+an operation-count proxy, not runtime. A full 2D phase map may be substantially more expensive.
+Compute time may be outside a routine Colab session and is not claimed feasible without measured
+kernel timing and resumable, validated chunking. A CPU-only Python loop over lattice sites would
+be unsuitable; tested JIT/vectorized or GPU exact-rotation kernels may be needed.
+The original Zenodo 23168407 is restricted; a request for permission is appropriate. Preserve original
+SHA-256 and terms of access if granted. Never regenerate “original” HEK-like data or treat new
+pseudorandom paths as historical author paths. Restricted original data do not block independent
+reconstruction of the published equations; they do block strict data/code identity claims.
+7
+Separation from subsequent Spiral-Time work
+Phase
+Allowed work and prohibited inference
+R: this pro-
+tocol
+Original A ≡1 oscillator, original spins and original stochastic bath; no Spiral-Time
+modifications.
+D: later ST-
+DIAG
+Apply causal U2 phase features and U3 history features only after a reference
+reproduction, with no-leakage, iid-Bernoulli/no-memory, AR/state-space, HMM
+and matched finite-memory controls; predeclared out-of-sample forecast horizon
+and confidence intervals. A history feature cannot predict iid future flips beyond
+the base rate.
+K: later ST-
+KIN
+Posit new exogenous AΘ(t) ∈C1, 0 < a−≤A ≤a+ in d(A ˙y)/dt + γ ˙y + ω2
+0y = ξΘ.
+Specify bath convention and kinetic energy balance first. The divided equation
+is an ordinary time-varying oscillator with effective damping, stiffness and force;
+match these ordinary effects. Do not claim thermal equilibrium under unverified
+fluctuation–dissipation assumptions.
+Native host
+No use of HLV native Window/Golden Carrier without a mathematical and physical
+interface from Z6 to the L×L spin phase space. Such an interface is neither provided
+by Wang et al. nor established by v0.3.1.
+8
+Required pre-freeze sign-off and handover
+Candidate review blockers: (1) extract a fully equation-accurate observable and source-temperature
+mapping including supplementary branch conventions; (2) demonstrate unbiased noise numerical
+equivalence, deterministic spin integrator correctness, and stochastic convergence; (3) resolve full-run
+compute capacity under source scale; (4) preserve the restricted-data access status and source-array
+limitations; (5) prepare an immutable source/parameter/seed manifest and exact figure targets; (6)
+secure review of gate thresholds and power by at least one independent reader.
+At handover, produce FROZEN_CONFIG.json, PROVENANCE.json, SHA256SUMS.txt, exact source PDF
+hash, versioned read-only implementation/notebook, pre-run test logs, numerical budgets and sign-off
+date. No primary scientific run is authorized by this candidate. If the original source code
+arrives after a freeze, compare its identity separately; an altered original-code branch requires an
+explicitly named successor, not substitution inside the locked run.
+5
+
+DTL-ST-REPRO-001 | CANDIDATE v0.1.0
+2 Nov 2026
+References and provenance
+[W26]
+Z.
+Wang,
+P.
+M.
+Schindler,
+M.
+Bukov,
+M.
+H.
+Michael,
+Discrete
+time
+liquids,
+arXiv:2610.30266v1 (21 October 2026); main Eqs. (3)–(16), Methods, Supplemental S1–S11, DOI
+10.48550/arXiv.2610.30266; restricted data/code DOI 10.5281/zenodo.23168407.
+[K26] M. Krüger, Typed Spiral-Time Diagnostics and Positive Kinetic Modulation in Discrete
+Time-Liquid Models, Mathematical Core v0.3.1, 2 November 2026, local author-review candidate; type-
+separation, conditional deterministic/stochastic energy and identifiability results. Related definition
+sources: Spiral-Time Master Operator Family v1.0.1 and Cut-and-Project/Incidence-Spectral Core
+v2.8.0.
+Evidence boundary: All source-figure assertions above are explicit statements of [W26], not
+independent new observations. No original-code replay, production spin run, frozen confirmatory
+result, thermodynamic equilibrium confirmation or new HLV physics is claimed here.
+6

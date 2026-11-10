@@ -1,0 +1,34 @@
+{
+  "status": "BLOCKED",
+  "reason": "results.json does not match the required SHA-256 hash 2074913e8d2e87048d9a9e419257586cfc02f7005789d90ba9ecf94e8efc99cf; the original file hash remains aeac34a0e92fb2e81051c873e94fc39a823be86f435cd42c0ebc578b8675952d and Task B is stopped before any full-grid reproduction.",
+  "dispatch_check": {
+    "A_prime_manufactured_a_0": 0.0,
+    "manufactured_ap_0": 0.48121182505960347,
+    "expected": 0.48121182505960347
+  },
+  "hashes": {
+    "oscillator_verification.py": {
+      "expected": "8d7fd2612e37ab3a30a08ba4829295c0c7415819486e3a96adcc1f78e8fca5ea",
+      "actual": "8d7fd2612e37ab3a30a08ba4829295c0c7415819486e3a96adcc1f78e8fca5ea",
+      "status": "MATCH"
+    },
+    "results.json": {
+      "expected": "2074913e8d2e87048d9a9e419257586cfc02f7005789d90ba9ecf94e8efc99cf",
+      "actual": "aeac34a0e92fb2e81051c873e94fc39a823be86f435cd42c0ebc578b8675952d",
+      "status": "MISMATCH"
+    }
+  },
+  "gates": {
+    "cumulative_gate": {
+      "value": 1e-06,
+      "status": "BLOCKED"
+    },
+    "pointwise_gate": {
+      "value": "BLOCKED_UNSPECIFIED",
+      "status": "BLOCKED"
+    }
+  },
+  "reproducibility": {
+    "stop_reason": "results.json hash mismatch before original-grid reproduction; original output file intentionally not modified."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "N_grid": [
+    100,
+    200,
+    400,
+    800,
+    1600,
+    3200,
+    6400,
+    12800
+  ],
+  "cumulative_gate": 1e-06,
+  "pointwise_gate": "BLOCKED_UNSPECIFIED",
+  "seed": 0,
+  "timestamp_utc": "2026-11-06T14:28:23Z",
+  "status": "BLOCKED",
+  "note": "Pointwise gate was not specified before execution; full grid not run because the required results.json hash mismatch blocked Task B."
+}

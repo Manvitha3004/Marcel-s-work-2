@@ -1,0 +1,12 @@
+part,item,verdict,evidence_location,value_or_quote,severity
+Part 1,QA suite inventory,REFUTED,verification/taskB/v0.1.1/oscillator_verification_fixed.py,"No pytest tests; the package is a script with functions such as symbolic_checks, convergence_study, energy_ledger.",major
+Part 1,11/11 reproduction,REFUTED,command output,python -m pytest -q verification/taskB/v0.1.1 -> no tests ran in 0.01s; script run -> overall_verdict FAIL: energy_ledger_residual,critical
+Part 1,Mutation battery,BLOCKED,missing package,Requested mutation set not present in workspace; package absent or not matching the spin/Strang package described by the protocol.,critical
+Part 1,JSON hash discrepancy,BLOCKED,missing candidate package,Required v0.1.0 hash discrepancy check cannot be verified because the target package/PDF is missing from the workspace.,major
+Part 1,Sign-control defect,BLOCKED,missing candidate package,The sign-control validation cannot be checked because the protocol package is absent from the workspace.,major
+Part 2,Spin sign and Strang integrator,BLOCKED,missing candidate package / no source reproduction,The requested spin-right-hand sign and Strang implementation checks are not available in the workspace package.,critical
+Part 2,Source fidelity,BLOCKED,verification/taskA/computations/arxiv_2610_30266.pdf,"Local source PDF is present, but exact source-fidelity cross-checks for all protocol equations and figures are not reproduced in this workspace.",major
+Part 3,Statistical gates,BLOCKED,missing candidate package,The protocol statistics package and sequence logic are absent; no direct gate audit possible in this workspace.,critical
+Part 4,Feasibility estimate,BLOCKED,missing package,Large-spin simulation inputs and package runtime measurement are not available in the workspace.,major
+Part 5,Source fidelity: paper definitions,BLOCKED,verification/taskA/computations/arxiv_2610_30266.pdf,Exact source definitions require the missing protocol package and the full paper extraction workflow; cannot be verified here.,major
+Part 6,Protocol integrity,BLOCKED,missing package,"Protocol-level integrity checks require the actual v0.1.1 candidate package and PDF, which are absent from this workspace.",major

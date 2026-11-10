@@ -1,0 +1,11 @@
+--- original
++++ minimal_fix
+@@ -48,6 +48,8 @@
+         return np.zeros_like(t_arr, dtype=float)
+     if A is constant_A or getattr(A, "__name__", "") == "constant_A":
+         return np.zeros_like(t_arr, dtype=float)
++    if A is manufactured_a or getattr(A, "__name__", "") == "manufactured_a":
++        return manufactured_ap(t_arr)
+     if A is eta_A or getattr(A, "__name__", "") == "eta_A":
+         a = eta_A(t_arr)
+         return a * ETA * (1.0 / np.cosh(np.sin(t_arr)) ** 2) * np.cos(t_arr)
